@@ -1,0 +1,791 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+    <title>FarmMate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+   <nav>
+    <h2>🌾 FarmMate</h2>
+
+    <div class="nav-links">
+        <button onclick="location.reload()">🏠 Home</button>
+        <button onclick="showDashboard()">📊 Dashboard</button> 
+        <button onclick="showMyCrops()">🌱 My Crops</button>
+        <button onclick="showWeather()">🌦️ Weather</button>
+    </div>
+</nav>  
+
+    <section>
+
+       <div class="hero">
+
+    <div class="hero-content">
+        <span class="hero-badge">🌱 Smart Farming Made Simple</span>
+
+        <h1>Grow Smarter with <span>FarmMate</span></h1>
+
+        <p>
+            Simple digital tools to help farmers manage crops,
+            weather, water and farming decisions.
+        </p>
+
+        <button onclick="showMyCrops()">
+            🌱 Manage My Crops
+        </button>
+    </div>
+
+</div> 
+
+        <button onclick="document.getElementById('cropPhoto').click()">
+    📸 Upload Crop Photo
+</button>
+
+        <input type="file" id="cropPhoto" accept="image/*" hidden>
+        <button onclick="analyzeCrop()">🔍 Detect Disease</button>
+
+        <div class="feature-grid">
+
+    <div class="feature-card" onclick="showMyCrops()">
+        <div class="feature-icon">🌱</div>
+        <h3>My Crops</h3>
+        <p>Manage your crops and view details.</p>
+    </div>
+
+    <div class="feature-card" onclick="showWeather()">
+        <div class="feature-icon">🌦️</div>
+        <h3>Weather</h3>
+        <p>Check current weather conditions.</p>
+    </div>
+
+    <div class="feature-card" onclick="showWaterCalculator()">
+        <div class="feature-icon">💧</div>
+        <h3>Water Calculator</h3>
+        <p>Estimate your crop water needs.</p>
+    </div>
+
+    <div class="feature-card" onclick="showMarketPrices()">
+        <div class="feature-icon">💰</div>
+        <h3>Market Prices</h3>
+        <p>View demo crop market prices.</p>
+    </div>
+
+    <div class="feature-card"
+         onclick="document.getElementById('cropPhoto').click()">
+        <div class="feature-icon">🔍</div>
+        <h3>Disease Detection</h3>
+        <p>Upload a crop photo for analysis.</p>
+    </div>
+
+    <div class="feature-card" onclick="showFertilizerGuide()">
+        <div class="feature-icon">🧪</div>
+        <h3>Fertilizer Guide</h3>
+        <p>Get basic fertilizer guidance.</p>
+    </div>
+
+</div> 
+
+        <br><br>
+
+        <button onclick="askFarmMate()">🎤 Ask FarmMate</button>
+
+        <div id="cropType" style="margin-top:20px;">
+
+            <h3>🌱 What crop is this?</h3>
+
+            <select id="cropSelect">
+                <option value="Tomato">🍅 Tomato</option>
+                <option value="Rice">🌾 Rice</option>
+                <option value="Cotton">🌿 Cotton</option>
+                <option value="Chilli">🌶️ Chilli</option>
+                <option value="Groundnut">🥜 Groundnut</option>
+            </select>
+
+        </div>
+
+        <div id="preview"></div>
+
+        <script>
+
+            document.getElementById("cropPhoto").onchange = function () {
+
+                let photo = document.getElementById("cropPhoto").files[0];
+
+                if (photo) {
+
+                    let image = document.createElement("img");
+
+                    image.src = URL.createObjectURL(photo);
+                    image.style.width = "300px";
+                    image.style.marginTop = "20px";
+                    image.style.borderRadius = "12px";
+
+                    document.getElementById("preview").innerHTML = "";
+
+                    document.getElementById("preview").appendChild(image);
+
+                    document.getElementById("preview").innerHTML +=
+                        "<br><br><button onclick='analyzeCrop()'>🔍 Analyze Crop</button>";
+                }
+            };
+
+
+         function analyzeCrop() {
+
+    let crop = document.getElementById("cropSelect").value;
+
+    let diseaseInfo = {
+
+        Tomato: {
+            problem: "Possible Leaf Disease",
+            symptoms: "Yellow spots or curling leaves",
+            advice: "Remove affected leaves and monitor the plant.",
+            water: "Avoid excessive watering."
+        },
+
+        Rice: {
+            problem: "Possible Leaf Discoloration",
+            symptoms: "Yellow or brown areas on leaves",
+            advice: "Maintain proper field drainage and monitor the crop.",
+            water: "Maintain suitable water levels."
+        },
+
+        Cotton: {
+            problem: "Possible Pest Damage",
+            symptoms: "Holes or damaged areas on leaves",
+            advice: "Inspect the plant regularly for pests.",
+            water: "Maintain moderate soil moisture."
+        },
+
+        Chilli: {
+            problem: "Possible Leaf Curling",
+            symptoms: "Leaves curling or becoming distorted",
+            advice: "Check the plant regularly for pests.",
+            water: "Avoid both overwatering and very dry soil."
+        },
+
+        Groundnut: {
+            problem: "Possible Plant Stress",
+            symptoms: "Yellowing or weak-looking leaves",
+            advice: "Check soil moisture and plant health.",
+            water: "Maintain suitable soil moisture."
+        }
+    };
+
+    let info = diseaseInfo[crop];
+
+    document.getElementById("preview").innerHTML += `
+
+        <div style="
+            background:white;
+            padding:25px;
+            margin:20px auto;
+            max-width:500px;
+            border-radius:15px;
+            box-shadow:0 3px 10px #ccc;
+        ">
+
+            <h2>🔍 Crop Analysis</h2>
+
+            <h3>🌱 Crop: ${crop}</h3>
+
+            <p>⚠️ <b>Possible Problem:</b>
+                ${info.problem}
+            </p>
+
+            <p>🔎 <b>Symptoms:</b>
+                ${info.symptoms}
+            </p>
+
+            <p>💡 <b>Recommendation:</b>
+                ${info.advice}
+            </p>
+
+            <p>💧 <b>Water Advice:</b>
+                ${info.water}
+            </p>
+
+           <p>
+    🤖 AI disease detection will be connected in the next stage.
+</p> 
+
+        </div>
+    `;
+}    
+
+
+        async function showWeather() {
+
+    document.getElementById("preview").innerHTML =
+        "<p>📍 Getting your location...</p>";
+
+    if (!navigator.geolocation) {
+        document.getElementById("preview").innerHTML =
+            "<p>❌ Location is not supported by your browser.</p>";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        async function(position) {
+
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+
+            let url =
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,rain&temperature_unit=celsius`;
+
+            try {
+
+                let response = await fetch(url);
+                let data = await response.json();
+
+                let temperature = data.current.temperature_2m;
+                let humidity = data.current.relative_humidity_2m;
+                let rain = data.current.rain;
+
+                document.getElementById("preview").innerHTML = `
+
+    <div class="weather-card">
+
+        <div class="weather-icon">🌦️</div>
+
+        <h2>Current Weather</h2>
+
+        <p class="weather-status">Live weather information</p>
+
+        <div class="weather-details">
+
+            <div>
+                <span>🌡️</span>
+                <h3>${temperature} °C</h3>
+                <p>Temperature</p>
+            </div>
+
+            <div>
+                <span>💧</span>
+                <h3>${humidity}%</h3>
+                <p>Humidity</p>
+            </div>
+
+            <div>
+                <span>🌧️</span>
+                <h3>${rain} mm</h3>
+                <p>Rain</p>
+            </div>
+
+        </div>
+
+        <div class="farming-condition">
+
+            🌱 Farming Condition:
+            
+            <strong>
+                ${temperature >= 20 && temperature <= 35
+                    ? "✅ Good"
+                    : "⚠️ Check crop requirements"}
+            </strong>
+
+        </div>
+
+    </div>
+`;
+
+                    
+
+                         
+            } catch (error) {
+
+                document.getElementById("preview").innerHTML =
+                    "<p>❌ Unable to get weather data.</p>";
+            }
+        },
+
+        function() {
+
+            document.getElementById("preview").innerHTML =
+                "<p>❌ Please allow location access to see your weather.</p>";
+        }
+        );
+}
+
+
+function showMarketPrices() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div style="
+            background:white;
+            padding:25px;
+            margin:20px auto;
+            max-width:500px;
+            border-radius:15px;
+            box-shadow:0 3px 10px #ccc;
+        ">
+
+            <h2>💰 Market Prices</h2>
+
+            <p>🌾 Rice: ₹32/kg</p>
+            <p>🍅 Tomato: ₹28/kg</p>
+            <p>🌶️ Chilli: ₹95/kg</p>
+            <p>🌿 Cotton: ₹72/kg</p>
+            <p>🥜 Groundnut: ₹65/kg</p>
+
+            <p>📅 Demo market prices</p>
+
+        </div>
+    `;
+}
+
+function showMyCrops() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div class="crop-page">
+
+            <h1>🌱 My Crops</h1>
+
+            <p>Add your crops and view their farming details.</p>
+
+            <div class="crop-input">
+
+                <input id="newCrop"
+                    placeholder="Enter crop name">
+
+                <button onclick="addCrop()">
+                    ➕ Add Crop
+                </button>
+
+            </div>
+
+            <div id="cropList"></div>
+
+        </div>
+    `;
+}
+function addCrop() {
+
+    let crop = document.getElementById("newCrop").value.trim();
+
+    if (crop === "") {
+        alert("Please enter a crop name");
+        return;
+    }
+
+    let details = {
+        tomato: {
+            soil: "Loamy soil",
+            water: "Moderate",
+            temperature: "20–30°C",
+            season: "Kharif / Rabi"
+        },
+
+        rice: {
+            soil: "Clayey soil",
+            water: "High",
+            temperature: "20–35°C",
+            season: "Kharif"
+        },
+
+        cotton: {
+            soil: "Black soil",
+            water: "Moderate",
+            temperature: "21–30°C",
+            season: "Kharif"
+        },
+
+        chilli: {
+            soil: "Well-drained loamy soil",
+            water: "Moderate",
+            temperature: "20–30°C",
+            season: "Kharif / Rabi"
+        },
+
+        groundnut: {
+            soil: "Sandy loam soil",
+            water: "Moderate",
+            temperature: "25–30°C",
+            season: "Kharif / Rabi"
+        }
+    };
+
+    let info = details[crop.toLowerCase()];
+
+    if (!info) {
+        info = {
+            soil: "Suitable well-drained soil",
+            water: "Depends on crop",
+            temperature: "Depends on crop",
+            season: "Depends on crop"
+        };
+    }
+
+    let cropId = "crop-" + Date.now();
+
+    document.getElementById("cropList").innerHTML += `
+
+        <div class="crop-card" id="${cropId}">
+
+            <div>
+                <h3>🌱 ${crop}</h3>
+
+                <p>🌍 Soil: ${info.soil}</p>
+                <p>💧 Water: ${info.water}</p>
+                <p>🌡️ Temperature: ${info.temperature}</p>
+                <p>📅 Season: ${info.season}</p>
+            </div>
+
+            <button onclick="deleteCrop('${cropId}')">
+                🗑️ Delete
+            </button>
+
+        </div>
+    `;
+
+    document.getElementById("newCrop").value = "";
+}
+
+
+function deleteCrop(id) {
+
+    document.getElementById(id).remove();
+
+} 
+function askFarmMate() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div style="
+            background:white;
+            padding:25px;
+            margin:20px auto;
+            max-width:500px;
+            border-radius:15px;
+            box-shadow:0 3px 10px #ccc;
+        ">
+
+            <h2>🎤 Ask FarmMate</h2>
+
+            <input id="farmQuestion"
+                placeholder="Ask your farming question..."
+                style="padding:10px; width:80%;">
+
+            <br><br>
+
+            <button onclick="getFarmAnswer()">Ask</button>
+
+            <p id="farmAnswer"></p>
+
+        </div>
+    `;
+}
+async function getFarmAnswer() {
+
+    let question = document.getElementById("farmQuestion").value.trim();
+    let answerBox = document.getElementById("farmAnswer");
+
+    if (!question) {
+        answerBox.innerHTML = "❓ Please enter a question.";
+        return;
+    }
+
+    answerBox.innerHTML = "🤔 FarmMate is thinking...";
+
+    try {
+
+        let response = await fetch("/ask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: question
+            })
+        });
+
+        let data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong");
+        }
+
+        answerBox.innerHTML = "🌱 FarmMate: " + data.answer;
+
+    } catch (error) {
+
+        answerBox.innerHTML =
+            "❌ Unable to connect to FarmMate AI.";
+    }
+} 
+       function showWaterCalculator() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div style="
+            background:white;
+            padding:25px;
+            margin:20px auto;
+            max-width:500px;
+            border-radius:15px;
+            box-shadow:0 3px 10px #ccc;
+        ">
+
+            <h2>💧 Water Calculator</h2>
+
+            <input id="waterCrop"
+                placeholder="Enter crop name"
+                style="padding:10px; width:80%;">
+
+            <br><br>
+
+            <input id="landArea"
+                type="number"
+                placeholder="Land area in acres"
+                style="padding:10px; width:80%;">
+
+            <br><br>
+
+            <button onclick="calculateWater()">Calculate</button>
+
+            <div id="waterResult"></div>
+
+        </div>
+    `;
+}
+
+
+function calculateWater() {
+
+    let crop = document.getElementById("waterCrop").value.trim();
+    let area = Number(document.getElementById("landArea").value);
+
+    if (!crop || !area || area <= 0) {
+        document.getElementById("waterResult").innerHTML =
+            "❌ Please enter crop name and land area.";
+        return;
+    }
+
+    let waterPerAcre = 1000;
+
+    let water = area * waterPerAcre;
+
+    document.getElementById("waterResult").innerHTML = `
+
+        <div style="
+            margin-top:20px;
+            padding:15px;
+            background:#f5fff5;
+            border-radius:12px;
+        ">
+
+            <h3>💧 Water Requirement</h3>
+
+            <p>🌱 Crop: ${crop}</p>
+            <p>🌾 Land: ${area} acre(s)</p>
+            <p>💧 Estimated water: ${water} litres</p>
+
+            <p>⚠️ Demo estimate — actual water needs depend on
+            soil, weather and crop growth stage.</p>
+
+        </div>
+    `;
+}
+function showFertilizerGuide() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div style="
+            background:white;
+            padding:25px;
+            margin:20px auto;
+            max-width:500px;
+            border-radius:15px;
+            box-shadow:0 3px 10px #ccc;
+        ">
+
+            <h2>🧪 Fertilizer Guide</h2>
+
+            <select id="fertCrop"
+                style="padding:10px; width:85%;">
+
+                <option>Tomato</option>
+                <option>Rice</option>
+                <option>Cotton</option>
+                <option>Chilli</option>
+                <option>Groundnut</option>
+
+            </select>
+
+            <br><br>
+
+            <select id="fertStage"
+                style="padding:10px; width:85%;">
+
+                <option>Seedling</option>
+                <option>Vegetative</option>
+                <option>Flowering</option>
+                <option>Fruit/Grain Development</option>
+
+            </select>
+
+            <br><br>
+
+            <button onclick="getFertilizerAdvice()">
+                🌱 Get Recommendation
+            </button>
+
+            <div id="fertResult"></div>
+
+        </div>
+    `;
+}
+
+
+function getFertilizerAdvice() {
+
+    let crop = document.getElementById("fertCrop").value;
+    let stage = document.getElementById("fertStage").value;
+
+    let advice = "Use fertilizer based on soil-test results and crop requirements.";
+
+    if (stage === "Vegetative") {
+        advice = "Nitrogen is generally important for healthy vegetative growth.";
+    }
+
+    if (stage === "Flowering") {
+        advice = "Balanced nutrition is important during flowering.";
+    }
+
+    if (stage === "Fruit/Grain Development") {
+        advice = "Potassium and balanced nutrition can be important during development.";
+    }
+
+    document.getElementById("fertResult").innerHTML = `
+
+        <div style="
+            margin-top:20px;
+            padding:15px;
+            background:#f5fff5;
+            border-radius:12px;
+        ">
+
+            <h3>🌱 Recommendation</h3>
+
+            <p>Crop: ${crop}</p>
+            <p>Growth Stage: ${stage}</p>
+            <p>💡 ${advice}</p>
+
+            <p>⚠️ Demo guidance — fertilizer selection
+            should be based on soil testing and local agricultural advice.</p>
+
+        </div>
+    `;
+}
+function showDashboard() {
+
+    document.getElementById("preview").innerHTML = `
+
+        <div class="dashboard">
+
+            <h1>📊 FarmMate Dashboard</h1>
+
+            <p>Your farming information in one place.</p>
+            <div class="dashboard-stats">
+
+    <div class="stat-card">
+        <span>🌱</span>
+        <h2>5</h2>
+        <p>Crops Supported</p>
+    </div>
+
+    <div class="stat-card">
+        <span>💧</span>
+        <h2>1000 L</h2>
+        <p>Water Estimate</p>
+    </div>
+
+    <div class="stat-card">
+        <span>🌦️</span>
+        <h2>Live</h2>
+        <p>Weather Data</p>
+    </div>
+
+    <div class="stat-card">
+        <span>💰</span>
+        <h2>Market</h2>
+        <p>Price Updates</p>
+    </div>
+
+</div>
+
+            <div class="dashboard-grid">
+
+                <div class="dashboard-card">
+                    <span>🌱</span>
+                    <h3>My Crops</h3>
+                    <p>Manage and monitor your crops.</p>
+                    <button onclick="showMyCrops()">Open</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <span>🌦️</span>
+                    <h3>Weather</h3>
+                    <p>Check current weather conditions.</p>
+                    <button onclick="showWeather()">Open</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <span>💧</span>
+                    <h3>Water</h3>
+                    <p>Calculate estimated water needs.</p>
+                    <button onclick="showWaterCalculator()">Open</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <span>💰</span>
+                    <h3>Market</h3>
+                    <p>View current crop prices.</p>
+                    <button onclick="showMarketPrices()">Open</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <span>🦠</span>
+                    <h3>Disease Detection</h3>
+                    <p>Analyze your crop photos.</p>
+                    <button onclick="document.getElementById('cropPhoto').click()">Analyze</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <span>🌿</span>
+                    <h3>Fertilizer Guide</h3>
+                    <p>Get fertilizer suggestions.</p>
+                    <button onclick="showFertilizerGuide()">Open</button>
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}   
+
+</script>
+
+    </section>
+<footer class="footer">
+
+    <h2>🌾 FarmMate</h2>
+
+    <p>
+        Smart farming tools for better farming decisions.
+    </p>
+
+    <p class="footer-small">
+        🌱 Grow Smarter • Farm Better • FarmMate
+    </p>
+
+</footer>
+</body>
+
+</html>
