@@ -1,12 +1,20 @@
- import express from "express";
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.json());
-app.use(express.static("."));
+app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 app.post("/ask", (req, res) => {
-
     const question = String(req.body.question || "").trim();
 
     if (!question) {
@@ -22,6 +30,4 @@ app.post("/ask", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("🌾 FarmMate running at http://localhost:3000");
-});
+export default app;  
